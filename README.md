@@ -54,7 +54,7 @@ Simbi Backend is a Node.js application built with Express and TypeScript, utiliz
 ### Prerequisites
 
 - Node.js (v16 or higher)
-- npm or yarn
+- npm
 - A database supported by Prisma (PostgreSQL, MySQL, SQLite, etc.)
 
 ### Installation
@@ -77,7 +77,6 @@ Simbi Backend is a Node.js application built with Express and TypeScript, utiliz
    ```
    DATABASE_URL=your_database_connection_string
    PORT=3000
-   NODE_ENV=development
    ```
 
 ## Database Setup
