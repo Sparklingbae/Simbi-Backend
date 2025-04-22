@@ -21,6 +21,7 @@ app.get("/", (req, res) => {
 });
 
 //added this to test prisma
+//to be removed
 app.get("/user/:name/:email", async (req, res) => {
    const user = await prisma.user.create({
         data: {
