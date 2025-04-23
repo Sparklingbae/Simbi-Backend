@@ -1,0 +1,52 @@
+{
+  "name": "simbi-backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc --build",
+    "dev": "nodemon src/server.ts",
+    "start": "node dist/server.js",
+    "migrate:dev": "npx prisma migrate dev --schema src/prisma/schema.prisma --name migration",
+    "generate:dev": "npx prisma generate --schema src/prisma/schema.prisma",
+    "migrate": "npx prisma migrate dev --schema dist/prisma/schema.prisma --name migration",
+    "generate": "npx prisma generate --schema dist/prisma/schema.prisma",
+    "studio": "npx prisma studio --schema src/prisma/schema.prisma"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Sparklingbae/Simbi-Backend.git"
+  },
+  "keywords": [],
+  "authors": [
+    "Efemena Esegbue",
+    "Blessing Asuquo",
+    "Daniel Nwolu"
+  ],
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Sparklingbae/Simbi-Backend/issues"
+  },
+  "homepage": "https://github.com/Sparklingbae/Simbi-Backend#readme",
+  "description": "",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "morgan": "^1.10.0",
+    "ts-node": "^10.9.2",
+    "@prisma/client": "^6.6.0"
+  },
+  "devDependencies": {
+    "@types/chalk": "^0.4.31",
+    "@types/cors": "^2.8.17",
+    "@types/dotenv": "^6.1.1",
+    "@types/express": "^5.0.1",
+    "@types/jsonwebtoken": "^9.0.9",
+    "@types/morgan": "^1.9.9",
+    "@types/nodemon": "^1.19.6",
+    "chalk": "^5.4.1",
+    "nodemon": "^3.1.9",
+    "prisma": "^6.6.0"
+  }
+}
