@@ -11,7 +11,7 @@ import { ForbiddenError } from "../utils/errorClasses";
 import { hash, compare } from "bcrypt";
 import Config from "../config/settings";
 import { genereteJWTToken } from "../utils/jwt";
-import { User } from "../prisma/generated/prisma";
+import jwt from "jsonwebtoken";
 
 export async function signUp(req: Request, res: Response, next: NextFunction) {
 	const user_info = req.body;
@@ -45,6 +45,35 @@ export async function login(req: Request, res: Response, next: NextFunction) {
 		}
 	}
 	next(new ForbiddenError("Invalid credentials"));
+	return;
+}
+
+export async function refreshToken(req: Request, res: Response, next: NextFunction) {
+	const { refreshToken } = req.body;
+    console.log(refreshToken);
+	if (!refreshToken) {
+		next(new ForbiddenError("Unauthorized"));
+		return;
+	}
+	try {
+        console.log("here");    
+		const decoded = jwt.verify(refreshToken, Config.REFRESH_JWT_SECRET);
+		if (!decoded) next(new ForbiddenError("Invalid token"));
+		const user = await getUserById(decoded.sub as string);
+		if (user) {
+			const access_token = genereteJWTToken(user.id, "access");
+			res.status(200).json({
+				status: "success",
+				message: "Token refreshed successfully",
+				access_token,
+			});
+			return;
+		}
+	} catch (err) {
+		next(new ForbiddenError("Unauthorized"));
+		return;
+	}
+	next(new ForbiddenError("User not found"));
 	return;
 }
 
@@ -90,10 +119,12 @@ export async function deleteUserById(req: CustomRequest, res: Response, next: Ne
 }
 
 export async function getMe(req: CustomRequest, res: Response, next: NextFunction) {
-    const current_user = req.user;
-    if (current_user) delete current_user.passwordHash;
-	res
-		.status(200)
-		.json({ status: "success", message: "User fetched successfully", user: req.user });
-    return;
+	const current_user = req.user;
+	if (current_user) delete current_user.passwordHash;
+	res.status(200).json({
+		status: "success",
+		message: "User fetched successfully",
+		user: req.user,
+	});
+	return;
 }

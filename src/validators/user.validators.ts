@@ -136,3 +136,21 @@ export function updateValidator(req: Request, res: Response, next: NextFunction)
 	}
 	next();
 }
+
+export async function refreshValidator(
+	req: Request,
+	res: Response,
+	next: NextFunction
+): Promise<void> {
+	const refreshSchema = Joi.object({
+		refreshToken: Joi.string().required().messages({
+			"any.required": "Refresh token is required",
+		}),
+	});
+	const { error } = refreshSchema.validate(req.body);
+	if (error) {
+		next(new BadRequestError(error.message));
+		return;
+	}
+	next();
+}

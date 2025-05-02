@@ -10,8 +10,7 @@
     "generate:dev": "npx prisma generate --schema src/prisma/schema.prisma",
     "migrate": "npx prisma migrate dev --schema dist/prisma/schema.prisma --name migration",
     "generate": "npx prisma generate --schema dist/prisma/schema.prisma",
-    "studio": "npx prisma studio --schema src/prisma/schema.prisma",
-    "reset": "npx prisma reset -schema src/prisma/schema.prisma "
+    "studio": "npx prisma studio --schema src/prisma/schema.prisma"
   },
   "repository": {
     "type": "git",
