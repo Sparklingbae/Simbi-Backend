@@ -10,7 +10,8 @@ export interface StudySession {
 	endTime: Date;
 	durationMinutes: number;
 	notes?: string | null;
-	productivityRating?: number ;
+	productivityRating?: number;
+	simbiReaction?: string;
 
 	// Relations
 	plan?: StudyPlan;
@@ -34,5 +35,6 @@ export interface UpdateStudySessionInput {
 	endTime?: Date;
 	durationMinutes?: number;
 	notes?: string | null;
-	productivityRating?: number ;
+	productivityRating?: number;
+	simbiReaction?: string;
 }

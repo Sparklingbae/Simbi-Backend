@@ -22,7 +22,7 @@ model User {
   firstName           String?
   lastName            String?
   educationLevel      String?
-  timezone            String              @default("UTC")
+  timezone            String?              @default("UTC")
   preferredStudyMethod String?
   createdAt           DateTime            @default(now())
   lastLogin           DateTime?
@@ -93,6 +93,7 @@ model StudySession {
   durationMinutes  Int
   notes            String?
   productivityRating Int?
+  simbiReaction       String     @default("neutral")
   
   // Relations
   plan             StudyPlan  @relation(fields: [planId], references: [id], onDelete: Cascade)
@@ -111,7 +112,6 @@ model PlanDailyStatus {
   totalMinutesStudied Int        @default(0)
   targetAchieved      Boolean    @default(false)
   status              DailyStatus
-  simbiReaction       String     @default("neutral")
   
   // Relations
   plan                StudyPlan  @relation(fields: [planId], references: [id], onDelete: Cascade)

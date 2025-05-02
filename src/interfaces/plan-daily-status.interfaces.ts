@@ -8,7 +8,6 @@ export interface PlanDailyStatus {
 	totalMinutesStudied: number;
 	targetAchieved: boolean;
 	status: DailyStatus;
-	simbiReaction: string;
 
 	// Relations
 	plan?: StudyPlan;

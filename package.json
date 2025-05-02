@@ -10,7 +10,8 @@
     "generate:dev": "npx prisma generate --schema src/prisma/schema.prisma",
     "migrate": "npx prisma migrate dev --schema dist/prisma/schema.prisma --name migration",
     "generate": "npx prisma generate --schema dist/prisma/schema.prisma",
-    "studio": "npx prisma studio --schema src/prisma/schema.prisma"
+    "studio": "npx prisma studio --schema src/prisma/schema.prisma",
+    "reset": "npx prisma reset -schema src/prisma/schema.prisma "
   },
   "repository": {
     "type": "git",
@@ -31,6 +32,7 @@
   "dependencies": {
     "@prisma/client": "^6.6.0",
     "@types/joi": "^17.2.2",
+    "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
@@ -40,6 +42,7 @@
     "ts-node": "^10.9.2"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
     "@types/chalk": "^0.4.31",
     "@types/cors": "^2.8.17",
     "@types/dotenv": "^6.1.1",

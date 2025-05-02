@@ -3,8 +3,9 @@ import cors from "cors";
 import { corsConfig } from "./config/cors";
 import morgan from "./utils/logger";
 import { NotFoundError } from "./utils/errorClasses";
-import prisma from "./database/db";
-import { errorHandler } from "./utils/errorMiddleware";
+import userAndAuthRouter from "./routes/userAndAuth.routes";
+import { errorHandler } from "./middlewares/error.middlewares";
+import Config from "./config/settings";
 
 const app: Application = express();
 app.use(express.json());
@@ -12,6 +13,7 @@ app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 app.use(cors(corsConfig));
 //used this for loggging request
 app.use(morgan("[ :date ] :coloured-method :url :status :response-time ms"));
+app.use(`/api/v${Config.API_VERSION}`, userAndAuthRouter);
 
 //check server health
 app.get("/", (req, res) => {
@@ -20,17 +22,17 @@ app.get("/", (req, res) => {
     .json({ status: "success", message: "Welcome to Simbi-Backend" });
 });
 
-//added this to test prisma
-//to be removed
-app.get("/user/:name/:email", async (req, res) => {
-   const user = await prisma.user.create({
-        data: {
-            name: req.params.name,
-            email: req.params.email
-        }
-    })
-    res.status(201).json(user)
-})
+// added this to test prisma
+// to be removed
+// app.get("/user/:name/:email", async (req, res) => {
+//    const user = await prisma.user.create({
+//         data: {
+//             name: req.params.name,
+//             email: req.params.email
+//         }
+//     })
+//     res.status(201).json(user)
+// })
 
 //catches all none existent route
 app.all('*"catch_all"', (req: Request, res: Response, next: NextFunction) => {
