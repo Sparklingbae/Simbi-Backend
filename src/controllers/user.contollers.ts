@@ -50,13 +50,11 @@ export async function login(req: Request, res: Response, next: NextFunction) {
 
 export async function refreshToken(req: Request, res: Response, next: NextFunction) {
 	const { refreshToken } = req.body;
-    console.log(refreshToken);
 	if (!refreshToken) {
 		next(new ForbiddenError("Unauthorized"));
 		return;
 	}
 	try {
-        console.log("here");    
 		const decoded = jwt.verify(refreshToken, Config.REFRESH_JWT_SECRET);
 		if (!decoded) next(new ForbiddenError("Invalid token"));
 		const user = await getUserById(decoded.sub as string);
