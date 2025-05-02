@@ -11,34 +11,33 @@ const app: Application = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 app.use(cors(corsConfig));
-//used this for loggging request
+
+/*
+* MORGAN LOGGER MIDDLEWARE
+*/
 app.use(morgan("[ :date ] :coloured-method :url :status :response-time ms"));
+
+/*
+* USERS AND AUTHENTICATION ROUTES
+*/
 app.use(`/api/v${Config.API_VERSION}`, userAndAuthRouter);
 
-//check server health
+/*
+* HOME ROUTE AND HEALTH CHECK
+*/
 app.get("/", (req, res) => {
   res
     .status(200)
     .json({ status: "success", message: "Welcome to Simbi-Backend" });
 });
 
-// added this to test prisma
-// to be removed
-// app.get("/user/:name/:email", async (req, res) => {
-//    const user = await prisma.user.create({
-//         data: {
-//             name: req.params.name,
-//             email: req.params.email
-//         }
-//     })
-//     res.status(201).json(user)
-// })
-
-//catches all none existent route
+/**
+ * CATCH ALL ROUTE
+ */
 app.all('*"catch_all"', (req: Request, res: Response, next: NextFunction) => {
   next(new NotFoundError(`Cannot find ${req.originalUrl} on this server`));
 });
 
-// gllobal error handling
+// GLOBAL ERROR HANDLING
 app.use(errorHandler);
 export default app;
