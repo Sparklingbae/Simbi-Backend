@@ -24,7 +24,6 @@ export function loginValidator(req: Request, res: Response, next: NextFunction):
 }
 
 export function signUpValidator(req: Request, res: Response, next: NextFunction): void {
-	console.log("in validator");
 	const createUserSchema = Joi.object({
 		username: Joi.string().min(3).max(30).alphanum().required().messages({
 			"string.min": "Username is required and must be between 3-30 alphanumeric characters",
