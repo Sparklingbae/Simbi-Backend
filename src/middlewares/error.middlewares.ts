@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { AppError } from "./errorClasses";
+import { AppError, ForbiddenError } from "../utils/errorClasses";
 
 export const errorHandler: (
   err: Error | AppError,
@@ -13,7 +13,12 @@ export const errorHandler: (
       message: err.message,
     });
   }
-
+  if(err instanceof ForbiddenError){
+    return res.status(err.statusCode).json({
+      status: "forbidden",
+      message: err.message,
+    });
+  }
   // For unexpected errors
   console.error("ERROR: ", err);
   return res.status(500).json({

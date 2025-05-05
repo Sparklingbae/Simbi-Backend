@@ -29,15 +29,19 @@
   "homepage": "https://github.com/Sparklingbae/Simbi-Backend#readme",
   "description": "",
   "dependencies": {
+    "@prisma/client": "^6.6.0",
+    "@types/joi": "^17.2.2",
+    "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
+    "joi": "^17.13.3",
     "jsonwebtoken": "^9.0.2",
     "morgan": "^1.10.0",
-    "ts-node": "^10.9.2",
-    "@prisma/client": "^6.6.0"
+    "ts-node": "^10.9.2"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
     "@types/chalk": "^0.4.31",
     "@types/cors": "^2.8.17",
     "@types/dotenv": "^6.1.1",
