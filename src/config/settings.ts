@@ -16,6 +16,7 @@ class Config {
 	static ALLOWED_ORIGINS: string[] = process.env.ALLOWED_ORIGINS?.split(",") || [];
 	static SALT_ROUNDS: number = process.env.SALT_ROUNDS ? parseInt(process.env.SALT_ROUNDS) : 10;
 	static API_VERSION: string = process.env.API_VERSION || "1";
+	static SIMBI_AI_KEY: string = process.env.SIMBI_AI_KEY ?? "default-simbi-ai-key";
 }
 
 export default Config;

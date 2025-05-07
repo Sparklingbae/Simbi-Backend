@@ -5,6 +5,17 @@ import { StudySession } from "./study-session.interfaces";
 import { PlanDailyStatus } from "./plan-daily-status.interfaces";
 import { Milestone } from "./milestone.interfaces";
 
+
+
+type Topics = [string]
+
+export interface StudyPlan {
+    title: string;
+    description: string;
+    duration: string;
+    topics: Topics;
+}
+
 export interface StudyPlan {
 	id: string;
 	userId: string;
