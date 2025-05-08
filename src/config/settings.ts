@@ -5,6 +5,8 @@ dotenv.config();
 class Config {
 	static PORT: string | undefined = process.env.PORT;
 	static DATABASE_URL: string | undefined = process.env.DATABASE_URL;
+	static DATABASE_URL_TEST: string | undefined = process.env.DATABASE_URL_TEST;
+	static ENVIRONMENT: string = process.env.ENVIRONMENT || "development";
 	static ACCESS_JWT_SECRET: string = process.env.ACCESS_JWT_SECRET ?? "your-secret-key";
 	static REFRESH_JWT_SECRET: string = process.env.REFRESH_JWT_SECRET ?? "your-secret-key";
 	static JWT_EXPIRATION_MINUTES: number = process.env.JWT_EXPIRATION_MINUTES
