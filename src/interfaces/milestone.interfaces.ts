@@ -1,7 +1,7 @@
 // milestone.interfaces.ts
 import { MilestoneStatus } from "./enums";
 import { User } from "./user.interfaces";
-import { StudyPlan } from "./study-plan.interfaces";
+import { StudyPlanCreate } from "./study-plan.interfaces";
 
 export interface Milestone {
 	id: string;
@@ -17,7 +17,7 @@ export interface Milestone {
 
 	// Relations
 	user?: User;
-	plan?: StudyPlan | null;
+	plan?: StudyPlanCreate | null;
 }
 
 export interface CreateMilestoneInput {
