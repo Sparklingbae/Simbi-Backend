@@ -53,3 +53,4 @@ export async function deleteUser(id: string): Promise<Omit<User, "passwordHash">
 		}
 	});
 }
+
