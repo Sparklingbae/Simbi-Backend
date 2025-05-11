@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { sendEmail } from '../services/email.services';
+import { sendEmail , sendWelcomeEmail } from '../services/email.services';
 
 export const sendEmailController = async (req: Request, res: Response): Promise<void> => {
   const { to, subject, text } = req.body;
@@ -17,3 +17,21 @@ export const sendEmailController = async (req: Request, res: Response): Promise<
     res.status(500).json({ error: 'Failed to send email.' });
   }
 };
+
+// sendWelcomeEmailController
+export const sendWelcomeEmailController = async (req: Request, res: Response): Promise<void> => {
+  const { to, name } = req.body;
+
+  if (!to || !name) {
+    res.status(400).json({ error: 'All fields are required.' });
+    return;
+  }
+
+  try {
+    await sendWelcomeEmail(to, name);
+    res.status(200).json({ message: 'Welcome email sent successfully!' });
+  } catch (error) {
+    console.error('Welcome email sending failed:', error);
+    res.status(500).json({ error: 'Failed to send welcome email.' });
+  }
+}
