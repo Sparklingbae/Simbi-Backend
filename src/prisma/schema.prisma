@@ -47,26 +47,6 @@ model Notification {
   user      User     @relation(fields: [userId], references: [id])
 }
 
-model Subject {
-  id              String         @id @default(uuid())
-  userId          String
-  name            String
-  educationLevel  String
-  educationYear   Int?
-  colorCode       String         @default("#3498db")
-  difficultyLevel Int            @default(3)
-  priority        Int            @default(3)
-  createdAt       DateTime       @default(now())
-  
-  // Relations
-  user            User           @relation(fields: [userId], references: [id], onDelete: Cascade)
-  studyPlans      StudyPlan[]
-  quizQuestions   QuizQuestion[]
-  
-  @@unique([userId, name])
-  @@index([userId])
-  @@map("subjects")
-}
 
 model StudyPlan {
   id            String       @id @default(uuid())
