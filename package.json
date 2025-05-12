@@ -39,7 +39,9 @@
     "jsonwebtoken": "^9.0.2",
     "morgan": "^1.10.0",
     "nodemailer": "^7.0.3",
-    "ts-node": "^10.9.2"
+    "ts-node": "^10.9.2",
+    "openai": "^4.97.0",
+    "zod": "^3.24.4"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",

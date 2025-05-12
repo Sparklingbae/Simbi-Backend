@@ -6,6 +6,7 @@ import { NotFoundError } from "./utils/errorClasses";
 import userAndAuthRouter from "./routes/userAndAuth.routes";
 import emailRoutes from './routes/email.routes';
 import notificationRoutes from "./routes/notifications.routes";
+import studyPlanRoute from "./routes/studyPlan.route";
 import { errorHandler } from "./middlewares/error.middlewares";
 import Config from "./config/settings";
 
@@ -25,6 +26,11 @@ app.use(morgan("[ :date ] :coloured-method :url :status :response-time ms"));
 app.use(`/api/v${Config.API_VERSION}`, userAndAuthRouter);
 app.use('/api/email', emailRoutes);
 app.use("/api/notifications", notificationRoutes);
+app.use(
+  `/api/v${Config.API_VERSION}/study-plan`,
+  studyPlanRoute
+);
+
 /*
 * HOME ROUTE AND HEALTH CHECK
 */
