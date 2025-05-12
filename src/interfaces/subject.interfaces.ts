@@ -1,5 +1,5 @@
 import { User } from "./user.interfaces";
-import { StudyPlan } from "./study-plan.interfaces";
+import { StudyPlanCreate } from "./study-plan.interfaces";
 import { QuizQuestion } from "./quiz-question.interfaces";
 
 export interface Subject {
@@ -15,7 +15,7 @@ export interface Subject {
 
 	// Relations
 	user?: User;
-	studyPlans?: StudyPlan[];
+	studyPlans?: StudyPlanCreate[];
 	quizQuestions?: QuizQuestion[];
 }
 

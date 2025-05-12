@@ -1,4 +1,4 @@
-import { StudyPlan } from "./study-plan.interfaces";
+import { StudyPlanCreate } from "./study-plan.interfaces";
 import { User } from "./user.interfaces";
 
 export interface StudySession {
@@ -14,7 +14,7 @@ export interface StudySession {
 	simbiReaction?: string;
 
 	// Relations
-	plan?: StudyPlan;
+	plan?: StudyPlanCreate;
 	user?: User;
 }
 

@@ -1,5 +1,5 @@
 import { DailyStatus } from "./enums";
-import { StudyPlan } from "./study-plan.interfaces";
+import { StudyPlanCreate } from "./study-plan.interfaces";
 
 export interface PlanDailyStatus {
 	id: string;
@@ -10,7 +10,7 @@ export interface PlanDailyStatus {
 	status: DailyStatus;
 
 	// Relations
-	plan?: StudyPlan;
+	plan?: StudyPlanCreate;
 }
 
 export interface CreatePlanDailyStatusInput {
