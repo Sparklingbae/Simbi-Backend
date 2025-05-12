@@ -2,3 +2,4 @@
 src/prisma/generated/
 node_modules/
 package-lock.json
+dist/
