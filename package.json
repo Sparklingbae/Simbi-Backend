@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc --build",
-    "build:prod": "tsc --build && npm run generate:dev && mkdir dist/prisma && cp src/prisma/schema.prisma dist/prisma/ && npx prisma generate --schema dist/prisma/schema.prisma --no-engine",
+    "build:prod": "npm run generate:dev && tsc --build && mkdir dist/prisma && cp src/prisma/schema.prisma dist/prisma/ && npm run migrate && npx prisma generate --schema dist/prisma/schema.prisma --no-engine",
     "dev": "nodemon src/server.ts",
     "start": "node dist/server.js",
     "migrate:dev": "npx prisma migrate dev --schema src/prisma/schema.prisma --name migration",
