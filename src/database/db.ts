@@ -1,6 +1,17 @@
 import { PrismaClient } from "../prisma/generated/prisma";
+import Config from "../config/settings";
 
-const prisma = new PrismaClient();
+const prisma = new PrismaClient({
+	datasources: {
+		db: {
+			url:
+				Config.ENVIRONMENT === "production"
+					? Config.DATABASE_URL
+					: Config.DATABASE_URL_TEST,
+		},
+	},
+});
+
 
 //function to connect
 export async function connectToDB(){

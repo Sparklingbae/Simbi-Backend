@@ -20,13 +20,14 @@ model User {
   email               String              @unique
   notifications Notification[]
   passwordHash        String
-  firstName           String?
-  lastName            String?
+  firstName           String
+  lastName            String
   educationLevel      String?
   timezone            String?              @default("UTC")
   preferredStudyMethod String?
   createdAt           DateTime            @default(now())
   lastLogin           DateTime?
+  preAssesmentQuestions  Json?
   
   // Relations
   studyPlans          StudyPlan[]
