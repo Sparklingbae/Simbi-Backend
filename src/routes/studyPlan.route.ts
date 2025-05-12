@@ -1,5 +1,5 @@
 import express from "express";
-import * as studyPlanController from "../controllers/studyPlan.controller";
+import * as studyPlanController from "../controllers/studyPlan.controllers";
 import { authMiddleware } from "../middlewares/authentication.middlewares";
 
 const router = express.Router();

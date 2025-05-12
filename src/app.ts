@@ -6,6 +6,7 @@ import { NotFoundError } from "./utils/errorClasses";
 import userAndAuthRouter from "./routes/userAndAuth.routes";
 import studyPlanRoute from "./routes/studyPlan.route";
 import { errorHandler } from "./middlewares/error.middlewares";
+import preassessmentRoute from "./routes/preassessment.route";
 import Config from "./config/settings";
 
 const app: Application = express();
@@ -26,6 +27,7 @@ app.use(
   `/api/v${Config.API_VERSION}/study-plan`,
   studyPlanRoute
 );
+app.use(`/api/v${Config.API_VERSION}/pre-assessment`, preassessmentRoute);
 
 /*
 * HOME ROUTE AND HEALTH CHECK
