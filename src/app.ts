@@ -7,6 +7,7 @@ import userAndAuthRouter from "./routes/userAndAuth.routes";
 import emailRoutes from './routes/email.routes';
 import notificationRoutes from "./routes/notifications.routes";
 import studyPlanRoute from "./routes/studyPlan.route";
+import chatRoute from "./routes/chat.routes";
 import { errorHandler } from "./middlewares/error.middlewares";
 import preassessmentRoute from "./routes/preassessment.route";
 import Config from "./config/settings";
@@ -32,6 +33,7 @@ app.use(
   studyPlanRoute
 );
 app.use(`/api/v${Config.API_VERSION}/pre-assessment`, preassessmentRoute);
+app.use(`/api/v${Config.API_VERSION}/chat`, chatRoute);
 
 /*
 * HOME ROUTE AND HEALTH CHECK
