@@ -36,12 +36,13 @@
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
+    "groq-sdk": "^0.21.0",
     "joi": "^17.13.3",
     "jsonwebtoken": "^9.0.2",
     "morgan": "^1.10.0",
     "nodemailer": "^7.0.3",
-    "ts-node": "^10.9.2",
     "openai": "^4.97.0",
+    "ts-node": "^10.9.2",
     "zod": "^3.24.4"
   },
   "devDependencies": {

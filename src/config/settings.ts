@@ -20,6 +20,7 @@ class Config {
 	static SALT_ROUNDS: number = process.env.SALT_ROUNDS ? parseInt(process.env.SALT_ROUNDS) : 10;
 	static API_VERSION: string = process.env.API_VERSION || "1";
 	static SIMBI_AI_KEY: string = process.env.SIMBI_AI_KEY ?? "default-simbi-ai-key";
+	static GROQ_API_KEY: string = process.env.GROQ_API_KEY ?? "default-groq-api-key";
 }
 
 export default Config;
