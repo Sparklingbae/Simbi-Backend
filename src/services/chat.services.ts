@@ -268,5 +268,11 @@ export async function processUserMessage(userId: string, messageData: CreateMess
             aiMessage: { ...aiMessage, role: aiMessage.role as "user" | "assistant" },
             userMessage: { ...userMessage, role: userMessage.role as "user" | "assistant" }
         };
-    });
+    },
+    {
+      timeout:10000, // Set a timeout for the transaction
+      isolationLevel: 'Serializable' // Set the isolation level for the transaction
+
+    }
+  );
 }
