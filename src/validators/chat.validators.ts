@@ -10,7 +10,7 @@ export function chatValidator(req: Request, res: Response, next: NextFunction): 
       "string.empty": "Message content is required",
       "any.required": "Message content is required",
     }),
-    chatId: Joi.string().optional(),
+    chatId: Joi.string().allow(null, '').optional(),
   });
 
   const { error } = schema.validate(req.body);
