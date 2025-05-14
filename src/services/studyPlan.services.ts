@@ -20,22 +20,22 @@ const studyPlanInputSchema = z.object({
   endDate: z.string(),
   dailyStudyTime: z.string(),
   daysAvailable: z.array(z.string()).or(z.string()),
-  priorityTag: z.string(),
-  difficultyLevel: z.string(),
-  studyLevel: z.string(),
-  addToSchedule: z.boolean().or(z.string().transform(val => val === "Yes")),
+  priorityTag: z.string().optional().default("Medium"),
+  difficultyLevel: z.string().optional().default("Intermediate"),
+  studyLevel: z.string().optional().default("Undergraduate"),
+  addToSchedule: z.boolean().or(z.string().transform(val => val === "Yes")).optional().default(false),
   preferredStudyMethod: z.string(),
   learningStyle: z.string(),
   dailyStudyDuration: z.string(),
   breakDuration: z.string(),
-  needStudyTips: z.boolean().or(z.string().transform(val => val === "Yes")),
-  preferredTone: z.string(),
-  milestoneType: z.string(),
-  motivationPreference: z.string(),
-  checkInStyle: z.string(),
-  telegramReminder: z.boolean().or(z.string().transform(val => val === "Yes")),
-  rewardStyle: z.string(),
-  rewardFrequency: z.string()
+  needStudyTips: z.boolean().or(z.string().transform(val => val === "Yes")).optional().default(true),
+  preferredTone: z.string().optional().default("Friendly"),
+  milestoneType: z.string().optional().default("Weekly"),
+  motivationPreference: z.string().optional().default("Encouraging"),
+  checkInStyle: z.string().optional().default("Daily"),
+  telegramReminder: z.boolean().or(z.string().transform(val => val === "Yes")).optional().default(false),
+  rewardStyle: z.string().optional().default("Achievement badges"),
+  rewardFrequency: z.string().optional().default("Weekly")
 });
 
 /**
@@ -64,6 +64,8 @@ export const generateStudyPlan = async (userId:string,input: StudyPlanInput): Pr
       subjects,
       daysAvailable
     });
+
+    console.log("Generated Prompt:", prompt);
 
     // Call OpenAI API
     const completion = await client.chat.completions.create({

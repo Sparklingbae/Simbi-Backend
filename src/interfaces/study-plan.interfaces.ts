@@ -8,23 +8,23 @@ export interface StudyPlanInput {
 	endDate: string;
 	dailyStudyTime: string;
 	daysAvailable: string[] | string;
-	priorityTag: string;
-	difficultyLevel: string;
-	studyLevel: string;
-	addToSchedule: boolean | string;
+	priorityTag?: string;
+	difficultyLevel?: string;
+	studyLevel?: string;
+	addToSchedule?: boolean | string;
 	preferredStudyMethod: string;
 	learningStyle: string;
 	dailyStudyDuration: string;
 	breakDuration: string;
-	needStudyTips: boolean | string;
-	preferredTone: string;
-	milestoneType: string;
-	motivationPreference: string;
-	checkInStyle: string;
-	telegramReminder: boolean | string;
-	rewardStyle: string;
-	rewardFrequency: string;
-  }
+	needStudyTips?: boolean | string;
+	preferredTone?: string;
+	milestoneType?: string;
+	motivationPreference?: string;
+	checkInStyle?: string;
+	telegramReminder?: boolean | string;
+	rewardStyle?: string;
+	rewardFrequency?: string;
+}
   
   /**
    * Structure of the AI-generated study plan
