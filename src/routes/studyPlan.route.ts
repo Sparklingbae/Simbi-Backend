@@ -1,6 +1,8 @@
 import express from "express";
 import * as studyPlanController from "../controllers/studyPlan.controllers";
 import { authMiddleware } from "../middlewares/authentication.middlewares";
+import { generateStudyPlanValidator } from "../validators/studyPlan.validators";
+
 
 const router = express.Router();
 
@@ -9,7 +11,7 @@ const router = express.Router();
  * @desc Generate a study plan using AI
  * @access Private
  */
-router.post("/generate", authMiddleware, studyPlanController.generateStudyPlan);
+router.post("/generate", authMiddleware, generateStudyPlanValidator,studyPlanController.generateStudyPlan);
 router.get("/all", authMiddleware, studyPlanController.getAllStudyPlans);
 router.get("/:planId", authMiddleware, studyPlanController.getStudyPlan);
 router.delete("/:planId", authMiddleware, studyPlanController.deleteStudyPlan);
