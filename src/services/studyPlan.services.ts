@@ -1,11 +1,10 @@
 import OpenAI from "openai";
 import { z } from "zod";
 import config from "../config/settings";
-// import prisma from "../database/db";
-// import { User, StudyPlan } from "../prisma/generated/prisma";
+import { getUserById } from "./user.services";
 import * as studyPlanModel from "../models/studyPlan.models";
 import { StudyPlanInput, GeneratedStudyPlan,StudyPlanCreate} from "../interfaces/study-plan.interfaces";
-import { any, } from "joi";
+import { sendStudyPlanCreatedEmail } from "./email.services";
 
 const client = new OpenAI({
   apiKey: config.SIMBI_AI_KEY,
@@ -326,5 +325,21 @@ export const getStudySessionsByStudyPlanId = async (studyPlanId: string) => {
     } catch (error) {
         console.error("Error retrieving study sessions:", error);
         throw new Error(`Failed to retrieve study sessions: ${error instanceof Error ? error.message : String(error)}`);
+    }
+}
+
+// send email
+export const sendStudyPlanEmail = async (userId:string,studyPlan: string) => {
+
+    // Fetch user details from the database
+    const user = await getUserById(userId);
+    if (!user) {
+        throw new Error("User not found");
+    }
+    try {
+        await sendStudyPlanCreatedEmail(user.email,user.firstName,studyPlan);
+    } catch (error) {
+        console.error("Error sending email:", error);
+        throw new Error(`Failed to send email: ${error instanceof Error ? error.message : String(error)}`);
     }
 }
