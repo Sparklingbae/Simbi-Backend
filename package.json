@@ -37,6 +37,7 @@
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
     "groq-sdk": "^0.21.0",
+    "handlebars": "^4.7.8",
     "joi": "^17.13.3",
     "jsonwebtoken": "^9.0.2",
     "morgan": "^1.10.0",

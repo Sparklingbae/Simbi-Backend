@@ -4,6 +4,7 @@ import * as studyPlanService from "../services/studyPlan.services";
 import { StudyPlanInput } from "../interfaces/study-plan.interfaces";
 import { getStudyPlanById } from "../models/studyPlan.models";
 
+
 export async function generateStudyPlan(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
         // Validate user is authenticated
@@ -18,7 +19,14 @@ export async function generateStudyPlan(req: Request, res: Response, next: NextF
         // Generate study plan using OpenAI
         const generatedPlan = await studyPlanService.generateStudyPlan(userId, studyPlanInput);
 
+ 
         if (generatedPlan) {
+            // send email to user
+            await studyPlanService.sendStudyPlanEmail(
+                userId,
+                generatedPlan.overview.name,
+            );
+
             res.status(200).json({
                 status: "success",
                 message: "Study plan generated successfully",
