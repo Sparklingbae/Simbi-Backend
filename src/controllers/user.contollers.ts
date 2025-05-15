@@ -8,7 +8,7 @@ import {
 	deleteUser,
 } from "../services/user.services";
 import { ForbiddenError } from "../utils/errorClasses";
-import { sendWelcomeEmail } from "../services/email.services";
+import { sendWelcomeEmail,sendUserSignupEmail} from "../services/email.services";
 import { hash, compare } from "bcrypt";
 import Config from "../config/settings";
 import { genereteJWTToken } from "../utils/jwt";
@@ -22,7 +22,7 @@ export async function signUp(req: Request, res: Response, next: NextFunction) {
 		delete user_info.password;
 		const user = await createUser(user_info);
 		if (user) {
-			await sendWelcomeEmail(user.email, user.firstName);
+			await sendUserSignupEmail(user.email, user.firstName);
 		}
 		res.status(201).json({ status: "success", message: "User created successfully", user });
 		return;
