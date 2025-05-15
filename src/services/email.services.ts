@@ -1,7 +1,10 @@
 import nodemailer from 'nodemailer';
 import {compileTemplate} from '../utils/emailTemplateEng';
+import { compileTemplateRaw } from '../utils/rawTemplateEng';
 import dotenv from 'dotenv';
 import axios from 'axios';
+import welcomeTemplate from '../templates/welcomeMail';
+import studyPlanTemplate from '../templates/studyPlanMail';
 
 
 
@@ -22,7 +25,6 @@ const transporter = nodemailer.createTransport({
 });
 
 // Function to send template with bravo
-
 export const sendTemplateEmailBravo = async <T extends Record<string, any>>(
   to: string,
   templateName: string,
@@ -30,7 +32,7 @@ export const sendTemplateEmailBravo = async <T extends Record<string, any>>(
   subject: string
 ): Promise<void> => {
   try {
-    const html = compileTemplate(templateName, templateData);
+    const html = compileTemplateRaw(templateName, templateData);
     await axios.post(
       'https://api.brevo.com/v3/smtp/email',
       {
@@ -85,7 +87,7 @@ export const sendStudyPlanCreatedEmail = async (
 ) => {
   await sendTemplateEmailBravo(
     to=to, 
-    'studyPlanMail',
+    studyPlanTemplate,
     {
     name,
     studyPlan,
@@ -97,7 +99,7 @@ export const sendStudyPlanCreatedEmail = async (
 
 // send user signup email using Brevo
 export const sendUserSignupEmail= async (to: string, name: string) => {
-  const html = compileTemplate('welcomeMail', {
+  const html = compileTemplateRaw(welcomeTemplate, {
     title: 'Welcome to Simbi!',
     companyName: 'Simbi',
     welcomeMessage: `Hello ${name}, we're thrilled to have you join our community of learners!`,
