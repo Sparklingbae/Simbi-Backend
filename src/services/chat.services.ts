@@ -2,6 +2,7 @@ import Groq from "groq-sdk";
 import Config from "../config/settings";
 import { PrismaClient } from "../prisma/generated/prisma";
 import { Chat, ChatHistoryParams, CreateMessageDto, Message } from "../interfaces/chat.interfaces";
+import { enhancedFormatAIResponse,removeSpecials } from "../utils/aiResponseFormate";
 
 const prisma = new PrismaClient();
 const groq = new Groq({ apiKey: Config.GROQ_API_KEY });
@@ -207,7 +208,7 @@ export async function processUserMessage(userId: string, messageData: CreateMess
         
         // Enhanced system prompt with user's name if available
         const personalizedPrompt = user?.firstName 
-            ? `${SYSTEM_PROMPT} I'm talking to ${user.firstName} ${user.lastName || ''}, and I'll make sure to personalize our conversation.`
+            ? `${SYSTEM_PROMPT} I'm talking to ${user.firstName} ${user.lastName || ''}, and I'll make sure to personalize our conversation.Only use the first name in the response and only on your first response.`
             : SYSTEM_PROMPT;
 
         // Format messages for Groq API
@@ -236,11 +237,12 @@ export async function processUserMessage(userId: string, messageData: CreateMess
         });
         
         const aiResponse = completion.choices[0]?.message?.content || "Sorry, I couldn't generate a response.";
-        
+        const formattedAIResponse = enhancedFormatAIResponse(aiResponse);
+        // const formattedAIResponse = removeSpecials(aiResponse);
         // Save AI response to the database
         const aiMessage = await tx.message.create({
             data: {
-                content: aiResponse,
+                content: formattedAIResponse,
                 role: 'assistant',
                 chatId: chat.id
             }

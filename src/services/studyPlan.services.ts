@@ -13,30 +13,29 @@ const client = new OpenAI({
 
 // Zod schema for validating the input
 const studyPlanInputSchema = z.object({
-  name: z.string(),
-  subjects: z.array(z.string()).or(z.string()),
-  startDate: z.string(),
-  endDate: z.string(),
-  dailyStudyTime: z.string(),
-  daysAvailable: z.array(z.string()).or(z.string()),
-  priorityTag: z.string().optional().default("Medium"),
-  difficultyLevel: z.string().optional().default("Intermediate"),
-  studyLevel: z.string().optional().default("Undergraduate"),
-  addToSchedule: z.boolean().or(z.string().transform(val => val === "Yes")).optional().default(false),
-  preferredStudyMethod: z.string(),
-  learningStyle: z.string(),
-  dailyStudyDuration: z.string(),
-  breakDuration: z.string(),
-  needStudyTips: z.boolean().or(z.string().transform(val => val === "Yes")).optional().default(true),
-  preferredTone: z.string().optional().default("Friendly"),
-  milestoneType: z.string().optional().default("Weekly"),
-  motivationPreference: z.string().optional().default("Encouraging"),
-  checkInStyle: z.string().optional().default("Daily"),
-  telegramReminder: z.boolean().or(z.string().transform(val => val === "Yes")).optional().default(false),
-  rewardStyle: z.string().optional().default("Achievement badges"),
-  rewardFrequency: z.string().optional().default("Weekly")
+    name: z.string(),
+    subjects: z.array(z.string()).or(z.string()),
+    startDate: z.string(),
+    endDate: z.string(),
+    dailyStudyTime: z.string().optional().default("2:00"),
+    daysAvailable: z.array(z.string()).or(z.string()),
+    priorityTag: z.string().optional().default("Medium"),
+    difficultyLevel: z.string().optional().default("Intermediate"),
+    studyLevel: z.string().optional().default("Undergraduate"),
+    addToSchedule: z.boolean().or(z.string().transform(val => val === "Yes")).optional().default(false),
+    preferredStudyMethod: z.string().optional().default("Pomodoro"),
+    learningStyle: z.string().optional().default("Visual"),
+    dailyStudyDuration: z.string(),
+    breakDuration: z.string(),
+    needStudyTips: z.boolean().or(z.string().transform(val => val === "Yes")).optional().default(true),
+    preferredTone: z.string().optional().default("Friendly"),
+    milestoneType: z.string().optional().default("Weekly"),
+    motivationPreference: z.string().optional().default("Encouraging"),
+    checkInStyle: z.string().optional().default("Daily"),
+    telegramReminder: z.boolean().or(z.string().transform(val => val === "Yes")).optional().default(false),
+    rewardStyle: z.string().optional().default("Achievement badges"),
+    rewardFrequency: z.string().optional().default("Weekly")
 });
-
 /**
  * Generates a study plan using the OpenAI API
  * @param input The user's study plan preferences
