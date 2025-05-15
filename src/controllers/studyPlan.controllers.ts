@@ -19,12 +19,12 @@ export async function generateStudyPlan(req: Request, res: Response, next: NextF
         // Generate study plan using OpenAI
         const generatedPlan = await studyPlanService.generateStudyPlan(userId, studyPlanInput);
 
- 
         if (generatedPlan) {
             // send email to user
+            const studyPlan = generatedPlan.overview.name;
             await studyPlanService.sendStudyPlanEmail(
                 userId,
-                generatedPlan.overview.name,
+                studyPlan,
             );
 
             res.status(200).json({
