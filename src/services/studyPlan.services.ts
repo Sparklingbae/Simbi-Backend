@@ -4,7 +4,8 @@ import config from "../config/settings";
 import { getUserById } from "./user.services";
 import * as studyPlanModel from "../models/studyPlan.models";
 import { StudyPlanInput, GeneratedStudyPlan,StudyPlanCreate} from "../interfaces/study-plan.interfaces";
-import { sendStudyPlanCreatedEmail } from "./email.services";
+import { sendStudyPlanCreatedEmail,sendStudySessionCompeted} from "./email.services";
+import { BadRequestError, ForbiddenError } from "../utils/errorClasses";
 
 const client = new OpenAI({
   apiKey: config.SIMBI_AI_KEY,
@@ -327,7 +328,7 @@ export const getStudySessionsByStudyPlanId = async (studyPlanId: string) => {
     }
 }
 
-// send email
+// send email when a study plan is created
 export const sendStudyPlanEmail = async (userId:string,studyPlan: string) => {
 
     // Fetch user details from the database
@@ -341,4 +342,104 @@ export const sendStudyPlanEmail = async (userId:string,studyPlan: string) => {
         console.error("Error sending email:", error);
         throw new Error(`Failed to send email: ${error instanceof Error ? error.message : String(error)}`);
     }
+}
+
+// the function send email when a study session is completed
+export const sendStudySessionEmail = async (userId:string,studySession: string) => {
+    // Fetch user details from the database
+    const user = await getUserById(userId);
+    if (!user) {
+        throw new Error("User not found");
+    }
+    try {
+        await sendStudySessionCompeted (user.email,studySession);
+    }catch (error) {
+    console.error("Error send email:", error);
+    throw new Error(`failed sending email: ${error instanceof Error ? error.message : String(error)}`);
+    };
+  }
+
+
+// confirm study plan study session was completed
+export const confirmStudySession = async (planId:string,timeSpent:number,sessionId: string) => {
+  try{
+    const studySession = await studyPlanModel.getStudySessionById(sessionId);
+    if (!studySession) {
+      throw new BadRequestError("Study session not found");
+    }
+    if (studySession.completed) {
+      throw new BadRequestError("Study session already completed");
+    }
+    if (timeSpent < studySession.duration) {
+      throw new BadRequestError("Time spent is less than the session duration");
+    }
+    const updatedSession = await studyPlanModel.updateStudySessionStatusById(sessionId, true);
+
+  // Get all study sessions for this study plan
+  const allSessions = await studyPlanModel.getStudySessionsByStudyPlanId(planId);
+  const totalSessions = allSessions.length;
+  const completedSessions = allSessions.filter(session => session.completed).length;
+  const completionPercentage = (completedSessions / totalSessions) * 100;
+
+  // Get all milestones for this study plan
+  const milestones = await studyPlanModel.getMilestonesByStudyPlanId(planId);
+  const totalMilestones = milestones.length;
+
+  // Update milestone percentages based on completed sessions
+  for (let i = 0; i < totalMilestones; i++) {
+    const milestone = milestones[i];
+    let milestonePercentage = 0;
+
+    if (i === 0 && completionPercentage >= 33) {
+      milestonePercentage = 100;
+    } else if (i === 1 && completionPercentage >= 66) {
+      milestonePercentage = 100;
+    } else if (i === 2 && completionPercentage === 100) {
+      milestonePercentage = 100;
+    } else {
+      milestonePercentage = Math.min(100, Math.max(0, completionPercentage - (i * 33)));
+    }
+
+    await studyPlanModel.updateMilestonePercentageById(milestone.id, milestonePercentage);
+  }
+
+
+    return updatedSession;
+  } catch (error) {
+    console.error("Error confirming study session:", error);
+    if (error instanceof BadRequestError || error instanceof ForbiddenError) {
+      throw error;
+    }
+    throw new BadRequestError(`Failed to confirm study session: ${error instanceof Error ? error.message : String(error)}`);
+  };
+}
+
+
+// get study session by id
+export const getStudySessionById = async (sessionId: string) => {
+  try {
+    const studySession = await studyPlanModel.getStudySessionById(sessionId);
+    if (!studySession) {
+      throw new BadRequestError("Study session not found");
+    }
+    return studySession;
+  } catch (error) {
+    console.error("Error retrieving study session:", error);
+    throw new Error(`Failed to retrieve study session: ${error instanceof Error ? error.message : String(error)}`);
+  }
+}
+
+
+// get milestone by id
+export const getMilestoneById = async (milestoneId: string) => {
+  try {
+    const milestone = await studyPlanModel.getMilestoneById(milestoneId);
+    if (!milestone) {
+      throw new BadRequestError("Milestone not found");
+    }
+    return milestone;
+  } catch (error) {
+    console.error("Error retrieving milestone:", error);
+    throw new Error(`Failed to retrieve milestone: ${error instanceof Error ? error.message : String(error)}`);
+  }
 }

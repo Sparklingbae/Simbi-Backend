@@ -11,6 +11,7 @@ export interface Milestone {
 	description?: string | null;
 	dueDate?: Date | null;
 	completionCriteria?: string | null;
+	percentage?: number | null;
 	status: MilestoneStatus;
 	createdAt: Date;
 	completedAt?: Date | null;
@@ -28,6 +29,7 @@ export interface CreateMilestoneInput {
 	dueDate?: Date | null;
 	completionCriteria?: string | null;
 	status?: MilestoneStatus;
+	percentage?: number | null;
 }
 
 export interface UpdateMilestoneInput {
@@ -37,4 +39,5 @@ export interface UpdateMilestoneInput {
 	completionCriteria?: string | null;
 	status?: MilestoneStatus;
 	completedAt?: Date | null;
+	percentage?: number | null;
 }

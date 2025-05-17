@@ -5,11 +5,11 @@ import dotenv from 'dotenv';
 import axios from 'axios';
 import welcomeTemplate from '../templates/welcomeMail';
 import studyPlanTemplate from '../templates/studyPlanMail';
+import studySessionCompleted from '../templates/sessionMail';
 
 
 
 dotenv.config();
-
 
 // transporter using Gmail SMTP settings
 const transporter = nodemailer.createTransport({
@@ -94,6 +94,21 @@ export const sendStudyPlanCreatedEmail = async (
     },
     'Your Study Plan is Ready!'
   );
+}
+
+// Function the send study session completed email
+export const sendStudySessionCompeted =async(
+  to:string,
+  studySession:string,
+)=>{
+  await sendTemplateEmailBravo(
+    to=to,
+    studySessionCompleted,
+    {
+      studySession,
+    },
+    "Congratulation you have completed a study session 🎉"
+  )
 }
 
 

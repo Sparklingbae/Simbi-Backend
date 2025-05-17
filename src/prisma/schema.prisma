@@ -97,6 +97,7 @@ model Milestone {
   description String
   targetDate  DateTime
   completed   Boolean     @default(false)
+  percentage  Float       @default(0)
   
   // Relations
   user        User        @relation(fields: [userId], references: [id])

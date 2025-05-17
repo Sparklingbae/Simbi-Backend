@@ -3,6 +3,7 @@ import { CustomRequest } from "../interfaces/request.interfaces";
 import * as studyPlanService from "../services/studyPlan.services";
 import { StudyPlanInput } from "../interfaces/study-plan.interfaces";
 import { getStudyPlanById } from "../models/studyPlan.models";
+import { getUserById } from "../services/user.services";
 
 
 export async function generateStudyPlan(req: Request, res: Response, next: NextFunction): Promise<void> {
@@ -243,3 +244,111 @@ export async function getStudySessionsByStudyPlanId(req: Request, res: Response,
         next(error);
     }
 }
+
+
+// confirm a study session was completed by study plan id
+export async function confirmCompleteStudySession(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+
+        // Validate user is authenticated
+        const customReq = req as CustomRequest;
+        if (!customReq.user?.id) {
+            res.status(401).json({ success: false, message: "Authentication required" });
+            return;
+        }
+        const planId = req.body.planId;
+        const sessionId = req.body.sessionId;
+        const timeSpent=req.body.timeSpent;
+        const userId= customReq.user.id;
+
+        const updatedSession = await studyPlanService.confirmStudySession(planId,timeSpent,sessionId);
+
+        if (updatedSession) {
+            await studyPlanService.sendStudySessionEmail(userId,updatedSession.topic)
+            res.status(200).json({
+                status: "success",
+                message: "Study session updated successfully",
+                data: updatedSession
+            });
+            return;
+        }
+
+        next(new Error("Failed to update study session"));
+    } catch (error) {
+        console.error("Error in updateStudySessionById controller:", error);
+        next(error);
+    }
+}
+
+
+// get a study session by id
+export async function getStudySessionById(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+        const sessionId = req.params.sessionId;
+        if (!sessionId) {
+            res.status(400).json({ success: false, message: "Session ID is required" });
+            return;
+        }
+        // Validate user is authenticated
+        const customReq = req as CustomRequest;
+        if (!customReq.user?.id) {
+            res.status(401).json({ success: false, message: "Authentication required" });
+            return;
+        }
+
+        const userId = customReq.user.id;
+
+        const studySession = await studyPlanService.getStudySessionById(sessionId);
+
+        if (studySession) {
+            res.status(200).json({
+                status: "success",
+                message: "Study session retrieved successfully",
+                data: studySession
+            });
+            return;
+        }
+
+        next(new Error("Failed to retrieve study session"));
+    } catch (error) {
+        console.error("Error in getStudySessionById controller:", error);
+        next(error);
+    }
+}
+
+
+// get  a milestone by id
+export async function getMilestoneById(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+        const milestoneId = req.params.milestoneId;
+        if (!milestoneId) {
+            res.status(400).json({ success: false, message: "Milestone ID is required" });
+            return;
+        }
+        // Validate user is authenticated
+        const customReq = req as CustomRequest;
+        if (!customReq.user?.id) {
+            res.status(401).json({ success: false, message: "Authentication required" });
+            return;
+        }
+
+        const userId = customReq.user.id;
+
+        const milestone = await studyPlanService.getMilestoneById(milestoneId);
+
+        if (milestone) {
+            res.status(200).json({
+                status: "success",
+                message: "Milestone retrieved successfully",
+                data: milestone
+            });
+            return;
+        }
+
+        next(new Error("Failed to retrieve milestone"));
+    } catch (error) {
+        console.error("Error in getMilestoneById controller:", error);
+        next(error);
+    }
+}
+

@@ -48,3 +48,23 @@ export function generateStudyPlanValidator(req: Request, res: Response, next: Ne
         next(error);
     }
 }
+
+
+export function validateConfirmCompleteStudySession(req: Request, res: Response, next: NextFunction): void {
+    const confirmCompleteStudySessionSchema = z.object({
+        planId: z.string().min(1, "Plan ID is required"),
+        sessionId: z.string().min(1, "Session ID is required"),
+        timeSpent: z.number()
+    });
+
+    try {
+        confirmCompleteStudySessionSchema.parse(req.body);
+        next();
+    } catch (error) {
+        if (error instanceof z.ZodError) {
+            next(new BadRequestError(error.errors[0].message));
+            return;
+        }
+        next(error);
+    }
+}
