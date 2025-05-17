@@ -34,7 +34,7 @@ export interface GeneratedStudyPlan {
 	  name: string;
 	  subjects: string[];
 	  duration: string;
-	  totalHours: number;
+	  totalDuration: number;
 	  difficulty: string;
 	};
 	schedule: Array<{
@@ -70,7 +70,7 @@ export interface StudyPlanCreate {
 	subjects: string[];
 	startDate: Date;
 	endDate: Date;
-	totalHours: number;
+	totalDuration: number;
 	difficultyLevel: string;
 	planData: GeneratedStudyPlan;
 	status: "active" | "completed" | "archived";

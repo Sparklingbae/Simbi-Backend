@@ -10,7 +10,7 @@ export const createStudyPlan = async (userId: string, data: {
   subjects: string[];
   startDate: Date;
   endDate: Date;
-  totalHours: number;
+  totalDuration: number;
   difficultyLevel: string;
   planData: GeneratedStudyPlan;
   status: string;
@@ -22,7 +22,7 @@ export const createStudyPlan = async (userId: string, data: {
       subjects: data.subjects,
       startDate: data.startDate,
       endDate: data.endDate,
-      totalHours: data.totalHours,
+      totalDuration: data.totalDuration,
       difficultyLevel: data.difficultyLevel,
       planData: data.planData as any, // JSON type in Prisma
       status: data.status,
@@ -32,7 +32,8 @@ export const createStudyPlan = async (userId: string, data: {
   return {
     ...createdPlan,
     planData: createdPlan.planData as unknown as GeneratedStudyPlan,
-    status: createdPlan.status as "active" | "completed" | "archived"
+    status: createdPlan.status as "active" | "completed" | "archived",
+    totalDuration: createdPlan.totalDuration || 0
   };
 };
 
@@ -49,7 +50,8 @@ export const getStudyPlanById = async (id: string): Promise<StudyPlanCreate | nu
   return {
     ...studyPlan,
     planData: studyPlan.planData as unknown as GeneratedStudyPlan,
-    status: studyPlan.status as "active" | "completed" | "archived"
+    status: studyPlan.status as "active" | "completed" | "archived",
+    totalDuration: studyPlan.totalDuration || 0
   };
 };
 
@@ -65,7 +67,8 @@ export const getStudyPlansByUserId = async (userId: string): Promise<StudyPlanCr
   return studyPlans.map(plan => ({
     ...plan,
     planData: plan.planData as unknown as GeneratedStudyPlan,
-    status: plan.status as "active" | "completed" | "archived"
+    status: plan.status as "active" | "completed" | "archived",
+    totalDuration: plan.totalDuration || 0
   }));
 };
 
@@ -81,7 +84,8 @@ export const updateStudyPlanStatus = async (id: string, status: string): Promise
   return {
     ...updatedPlan,
     planData: updatedPlan.planData as unknown as GeneratedStudyPlan,
-    status: updatedPlan.status as "active" | "completed" | "archived"
+    status: updatedPlan.status as "active" | "completed" | "archived",
+    totalDuration: updatedPlan.totalDuration || 0
   };
 };
 
@@ -137,15 +141,15 @@ export const createStudySessionsFromPlan = async (
         }
         
         // Calculate duration
-        const durationMinutes = Math.floor((endTimeObj.getTime() - startTimeObj.getTime()) / 60000);
+        const durationSeconds = Math.floor((endTimeObj.getTime() - startTimeObj.getTime()) / 1000);
         
         // Ensure duration is positive
-        if (durationMinutes <= 0) {
+        if (durationSeconds <= 0) {
           console.warn("Session has zero or negative duration:", session);
           // You could either throw an error or set a minimum duration
           // throw new Error("Session duration must be positive");
           // Or set a minimum duration:
-          const minimumDuration = 30; // 30 minutes
+          const minimumDuration = 60; // 60 seconds (1 minute)
           
           return prisma.studySession.create({
             data: {
@@ -171,7 +175,7 @@ export const createStudySessionsFromPlan = async (
             endTime: endTimeObj,
             topic: session.topic,
             notes: session.description || null,
-            duration: durationMinutes,
+            duration: durationSeconds,
             completed: false
           }
         });
