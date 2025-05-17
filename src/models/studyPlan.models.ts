@@ -239,3 +239,95 @@ export const getStudySessionsByStudyPlanId = async (studyPlanId: string): Promis
     endTime: session.endTime?.toISOString().split('T')[1].slice(0, 5) || '' // Format to HH:mm
   }));
 }
+
+// get a study session by id
+export const getStudySessionById = async (id: string): Promise<any | null> => {
+  const studySession = await prisma.studySession.findUnique({
+    where: { id }
+  });
+
+  if (!studySession) return null;
+
+  return {
+    ...studySession,
+    date: studySession.date.toISOString().split('T')[0], // Format to YYYY-MM-DD
+    startTime: studySession.startTime?.toISOString().split('T')[1].slice(0, 5) || '', // Format to HH:mm
+    endTime: studySession.endTime?.toISOString().split('T')[1].slice(0, 5) || '' // Format to HH:mm
+  };
+}
+
+// update a study session by id
+export const updateStudySessionById = async (id: string, data: {
+  date: string | Date;
+  startTime: string | Date;
+  endTime: string | Date;
+  topic: string;
+  description?: string;
+}): Promise<any> => { 
+  const updatedSession = await prisma.studySession.update({
+    where: { id },
+    data: {
+      date: data.date,
+      startTime: data.startTime,
+      endTime: data.endTime,
+      topic: data.topic,
+      notes: data.description || null
+    }
+  });
+
+  return {
+    ...updatedSession,
+    date: updatedSession.date.toISOString().split('T')[0], // Format to YYYY-MM-DD
+    startTime: updatedSession.startTime?.toISOString().split('T')[1].slice(0, 5) || '', // Format to HH:mm
+    endTime: updatedSession.endTime?.toISOString().split('T')[1].slice(0, 5) || '' // Format to HH:mm
+  };
+}
+
+
+// update study session status by id
+export const updateStudySessionStatusById = async (id: string, completed: boolean): Promise<any> => {
+  const updatedSession = await prisma.studySession.update({
+    where: { id },
+    data: {
+      completed: completed
+    }
+  });
+
+  return {
+    ...updatedSession,
+    date: updatedSession.date.toISOString().split('T')[0], // Format to YYYY-MM-DD
+    startTime: updatedSession.startTime?.toISOString().split('T')[1].slice(0, 5) || '', // Format to HH:mm
+    endTime: updatedSession.endTime?.toISOString().split('T')[1].slice(0, 5) || '' // Format to HH:mm
+  };
+}
+
+// update milestone percentage by id
+export const updateMilestonePercentageById = async (id: string, percentage: number): Promise<any> => {
+  const updatedMilestone = await prisma.milestone.update({
+    where: { id },
+    data: {
+      percentage: percentage
+    }
+  });
+
+  return {
+    ...updatedMilestone,
+    targetDate: updatedMilestone.targetDate.toISOString().split('T')[0] // Format to YYYY-MM-DD
+  };
+}
+
+
+// get milestone by id
+export const getMilestoneById = async (id: string): Promise<any | null> => {
+  const milestone = await prisma.milestone.findUnique({
+    where: { id }
+  });
+
+  if (!milestone) return null;
+
+  return {
+    ...milestone,
+    targetDate: milestone.targetDate.toISOString().split('T')[0] // Format to YYYY-MM-DD
+  };
+}
+

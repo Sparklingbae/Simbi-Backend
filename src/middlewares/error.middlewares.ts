@@ -23,6 +23,6 @@ export const errorHandler: (
   console.error("ERROR: ", err);
   return res.status(500).json({
     status: "error",
-    message: "Something went wrong",
+    message: err.toString(),
   });
 };

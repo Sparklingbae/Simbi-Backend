@@ -22,4 +22,12 @@ router.get("/:planId/milestones", authMiddleware, studyPlanController.getMilesto
 // route to get all study sessions of a study plan
 router.get("/:planId/sessions", authMiddleware, studyPlanController.getStudySessionsByStudyPlanId);
 
+//route to confirm that a study session is completed
+router.post("/complete-session",authMiddleware,studyPlanController.confirmCompleteStudySession)
+
+// route to get a session by id
+router.get("/session/:sessionId", authMiddleware, studyPlanController.getStudySessionById);
+// route to get a milestone by id
+router.get("/milestone/:milestoneId", authMiddleware, studyPlanController.getMilestoneById);
+
 export default router;
