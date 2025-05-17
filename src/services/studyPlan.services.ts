@@ -18,7 +18,7 @@ const studyPlanInputSchema = z.object({
     subjects: z.array(z.string()).or(z.string()),
     startDate: z.string(),
     endDate: z.string(),
-    dailyStudyTime: z.string().optional().default("2:00"),
+    dailyStudyTime: z.string().optional().default("00:00"),
     daysAvailable: z.array(z.string()).or(z.string()),
     priorityTag: z.string().optional().default("Medium"),
     difficultyLevel: z.string().optional().default("Intermediate"),
@@ -113,7 +113,7 @@ const createStudyPlanPrompt = (input: StudyPlanInput): string => {
   ## Study Plan Overview
   - Name: ${input.name}
   - Subject(s): ${Array.isArray(input.subjects) ? input.subjects.join(", ") : input.subjects}
-  - Duration: ${input.startDate} to ${input.endDate}
+  - Duration: ${input.startDate} to ${input.endDate} 
   - Daily Study Time: ${input.dailyStudyTime}
   - Available Days: ${Array.isArray(input.daysAvailable) ? input.daysAvailable.join(", ") : input.daysAvailable}
   - Priority: ${input.priorityTag}
@@ -140,7 +140,7 @@ const createStudyPlanPrompt = (input: StudyPlanInput): string => {
       "name": "Study plan name",
       "subjects": ["subject1", "subject2"],
       "duration": "start to end",
-      "totalHours": number,
+      "totalDuration": number, // this is the total duration in of the study sessions in seconds
       "difficulty": "level"
     },
     "schedule": [
@@ -179,7 +179,8 @@ const createStudyPlanPrompt = (input: StudyPlanInput): string => {
   }
   
   Make sure the schedule accounts for the specified days available and daily durations. The plan should be comprehensive, realistic, and tailored to the subject and difficulty level.
-  
+  Ensure that the study sessions generated strictly last for the daily study duration as indicated by the user, note that daily study duration can be in hours or minutes,
+  if the user specifies a daily study duration of 2h, the study sessions should be divided into 2 hours.If the user specifies a daily study duration of 1m, the study sessions should be divided into 1 minutes each.
   IMPORTANT: Please include at least 3 meaningful milestones strategically placed throughout the study duration to track progress. These milestones should represent significant achievements or checkpoints (beginning, middle, and end) that align with the student's learning journey. Each milestone should have a clear, achievable objective with a specific target date.
   `;
 };
@@ -196,7 +197,7 @@ export const saveStudyPlan = async (userId: string, plan: GeneratedStudyPlan) =>
       subjects: plan.overview.subjects,
       startDate: new Date(plan.schedule[0].date),
       endDate: new Date(plan.schedule[plan.schedule.length - 1].date),
-      totalHours: plan.overview.totalHours,
+      totalDuration: plan.overview.totalDuration,
       difficultyLevel: plan.overview.difficulty,
       planData: plan, // Store the full JSON plan
       status: "active"

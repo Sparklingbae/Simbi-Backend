@@ -50,11 +50,11 @@ export function generateStudyPlanValidator(req: Request, res: Response, next: Ne
 }
 
 
-export function validateConfirmCompleteStudySession(req: Request, res: Response, next: NextFunction): void {
+export function validateConfirmCompleteStudySession(req: Request, _res: Response, next: NextFunction): void {
     const confirmCompleteStudySessionSchema = z.object({
         planId: z.string().min(1, "Plan ID is required"),
         sessionId: z.string().min(1, "Session ID is required"),
-        timeSpent: z.number()
+        timeSpent: z.string().transform((val) => Number(val))
     });
 
     try {

@@ -57,7 +57,7 @@ model StudyPlan {
   subjects      String[]
   startDate     DateTime
   endDate       DateTime
-  totalHours    Float
+  totalDuration   Int?    @default(0)// string e.g 1h for hours and 1m for minutes
   difficultyLevel String
   planData      Json         // Stores the full generated plan as JSON
   status        String       // "active", "completed", "archived"
