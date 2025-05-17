@@ -1,7 +1,7 @@
 import express from "express";
 import * as studyPlanController from "../controllers/studyPlan.controllers";
 import { authMiddleware } from "../middlewares/authentication.middlewares";
-import { generateStudyPlanValidator } from "../validators/studyPlan.validators";
+import { generateStudyPlanValidator , validateConfirmCompleteStudySession } from "../validators/studyPlan.validators";
 
 
 const router = express.Router();
@@ -23,7 +23,7 @@ router.get("/:planId/milestones", authMiddleware, studyPlanController.getMilesto
 router.get("/:planId/sessions", authMiddleware, studyPlanController.getStudySessionsByStudyPlanId);
 
 //route to confirm that a study session is completed
-router.post("/complete-session",authMiddleware,studyPlanController.confirmCompleteStudySession)
+router.post("/complete-session",authMiddleware,validateConfirmCompleteStudySession,studyPlanController.confirmCompleteStudySession)
 
 // route to get a session by id
 router.get("/session/:sessionId", authMiddleware, studyPlanController.getStudySessionById);
