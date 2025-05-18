@@ -306,12 +306,11 @@ export const updateStudySessionStatusById = async (id: string, completed: boolea
 }
 
 // update milestone percentage by id
-export const updateMilestonePercentageById = async (id: string, percentage: number,status:boolean): Promise<any> => {
+export const updateMilestonePercentageById = async (id: string, percentage: number): Promise<any> => {
   const updatedMilestone = await prisma.milestone.update({
     where: { id },
     data: {
       percentage: percentage,
-      completed: status
     }
   });
 
@@ -336,3 +335,17 @@ export const getMilestoneById = async (id: string): Promise<any | null> => {
   };
 }
 
+// update a milestone completed status by id
+export const updateMilestoneStatusById = async (id: string, completed: boolean): Promise<any> => {
+  const updatedMilestone = await prisma.milestone.update({
+    where: { id },
+    data: {
+      completed: completed
+    }
+  });
+
+  return {
+    ...updatedMilestone,
+    targetDate: updatedMilestone.targetDate.toISOString().split('T')[0] // Format to YYYY-MM-DD
+  };
+}
