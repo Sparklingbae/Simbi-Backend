@@ -306,11 +306,12 @@ export const updateStudySessionStatusById = async (id: string, completed: boolea
 }
 
 // update milestone percentage by id
-export const updateMilestonePercentageById = async (id: string, percentage: number): Promise<any> => {
+export const updateMilestonePercentageById = async (id: string, percentage: number,status:boolean): Promise<any> => {
   const updatedMilestone = await prisma.milestone.update({
     where: { id },
     data: {
-      percentage: percentage
+      percentage: percentage,
+      completed: status
     }
   });
 

@@ -1,5 +1,6 @@
 .env
 src/prisma/generated/
+src/prisma/migrations/
 src/prisma/dev.db
 node_modules/
 package-lock.json

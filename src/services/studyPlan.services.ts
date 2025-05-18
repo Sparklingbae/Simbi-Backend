@@ -390,20 +390,23 @@ export const confirmStudySession = async (planId:string,timeSpent:number,session
   for (let i = 0; i < totalMilestones; i++) {
     const milestone = milestones[i];
     let milestonePercentage = 0;
+    let shouldComplete = false;
 
     if (i === 0 && completionPercentage >= 33) {
       milestonePercentage = 100;
+      shouldComplete = true;
     } else if (i === 1 && completionPercentage >= 66) {
       milestonePercentage = 100;
+      shouldComplete = true;
     } else if (i === 2 && completionPercentage === 100) {
       milestonePercentage = 100;
+      shouldComplete = true;
     } else {
       milestonePercentage = Math.min(100, Math.max(0, completionPercentage - (i * 33)));
     }
 
-    await studyPlanModel.updateMilestonePercentageById(milestone.id, milestonePercentage);
+    await studyPlanModel.updateMilestonePercentageById(milestone.id, milestonePercentage, shouldComplete);
   }
-
 
     return updatedSession;
   } catch (error) {
