@@ -405,7 +405,10 @@ export const confirmStudySession = async (planId:string,timeSpent:number,session
       milestonePercentage = Math.min(100, Math.max(0, completionPercentage - (i * 33)));
     }
 
-    await studyPlanModel.updateMilestonePercentageById(milestone.id, milestonePercentage, shouldComplete);
+    await studyPlanModel.updateMilestonePercentageById(milestone.id, milestonePercentage);
+    if (shouldComplete) {
+      await studyPlanModel.updateMilestoneStatusById(milestone.id, true);
+    }
   }
 
     return updatedSession;
