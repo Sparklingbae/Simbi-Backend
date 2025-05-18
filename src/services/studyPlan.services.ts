@@ -217,7 +217,26 @@ export const saveStudyPlan = async (userId: string, plan: GeneratedStudyPlan) =>
  */
 export const getUserStudyPlans = async (userId: string) => {
   try {
-    return await studyPlanModel.getStudyPlansByUserId(userId);
+    const studyPlans = await studyPlanModel.getStudyPlansByUserId(userId);
+    
+    // Map through study plans and add percentage
+    const studyPlansWithPercentage = await Promise.all(studyPlans.map(async (plan) => {
+      // Get milestones for this study plan
+      const milestones = await studyPlanModel.getMilestonesByStudyPlanId(plan.id);
+      
+      // Calculate average percentage from milestones
+      const percentage = milestones.length 
+        ? milestones.reduce((sum, milestone) => sum + (milestone.percentage || 0), 0) / milestones.length
+        : 0;
+
+      // Return plan with percentage rounded to 2 decimal places
+      return {
+        ...plan,
+        percentage: Math.round(percentage * 100) / 100
+      };
+    }));
+
+    return studyPlansWithPercentage;
   } catch (error) {
     console.error("Error retrieving study plans:", error);
     throw new Error(`Failed to retrieve study plans: ${error instanceof Error ? error.message : String(error)}`);
@@ -228,7 +247,26 @@ export const getUserStudyPlans = async (userId: string) => {
 // get all study plans of a user
 export const getStudyPlans = async (userId: string) => {
   try {
-    return await studyPlanModel.getStudyPlansByUserId(userId);
+    const studyPlans = await studyPlanModel.getStudyPlansByUserId(userId);
+    
+    // Map through study plans and add percentage
+    const studyPlansWithPercentage = await Promise.all(studyPlans.map(async (plan) => {
+      // Get milestones for this study plan
+      const milestones = await studyPlanModel.getMilestonesByStudyPlanId(plan.id);
+      
+      // Calculate average percentage from milestones
+      const percentage = milestones.length 
+        ? milestones.reduce((sum, milestone) => sum + (milestone.percentage || 0), 0) / milestones.length
+        : 0;
+
+      // Return plan with percentage rounded to 2 decimal places
+      return {
+        ...plan,
+        percentage: Math.round(percentage * 100) / 100
+      };
+    }));
+
+    return studyPlansWithPercentage;
   } catch (error) {
     console.error("Error retrieving study plans:", error);
     throw new Error(`Failed to retrieve study plans: ${error instanceof Error ? error.message : String(error)}`);
